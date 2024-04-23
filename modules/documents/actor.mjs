@@ -1,3 +1,62 @@
+export function highlightWoundThresholds(sheet, [html], data) {
+    const input = html.querySelector(`[name="system.attributes.wounds.value"]`);
+    const onChange = () => {
+        const woundTotal = data.system.attributes.wounds.max;
+        const woundPercentage = data.system.attributes.wounds.value / woundTotal;
+
+        let state = null;
+        if (woundPercentage <= 0) {
+            state = "dead";
+        } else if (woundPercentage <= 0.5) {
+            state = "critical";
+        } else if (woundPercentage <= 0.75) {
+            state = "wounded";
+        } else if (woundPercentage < 1) {
+            state = "grazed";
+        }
+
+        if (input) {
+            const parentNode = input.parentNode;
+            parentNode.classList.remove("wt-dead", "wt-critical", "wt-wounded", "wt-grazed");
+            if (state) {
+                parentNode.classList.add(`wt-${state}`);
+            }
+        }
+    }
+    input.addEventListener("change", onChange);
+    onChange()
+}
+
+export function highlightVigorThresholds(sheet, [html], data) {
+    const input = html.querySelector(`[name="system.attributes.vigor.value"]`);
+    const onChange = () => {
+        let state = null;
+        if (data.system.attributes.vigor.value === 0) {
+            state = "grazed";
+        }
+
+        if (input) {
+            const parentNode = input.parentNode;
+            parentNode.classList.remove("wt-grazed");
+            if (state) {
+                parentNode.classList.add(`wt-${state}`);
+            }
+        }
+    }
+    input.addEventListener("change", onChange);
+    onChange()
+}
+
+export function reduceWoundPoints(document, changes, options, userId) {
+    if (
+        changes.system?.abilities?.con?.damage !== undefined
+        || changes.system?.abilities?.con?.drain !== undefined
+        || changes.system?.abilities?.con?.penalty !== undefined
+    ) {
+        delete changes.system?.attributes?.wounds;
+    }
+}
+
 export function toggleWoundThresholds(document, changes, options, userId) {
     const vigorChanged = changes?.system?.attributes?.vigor;
     const woundsChanged = changes?.system?.attributes?.wounds;
@@ -6,13 +65,16 @@ export function toggleWoundThresholds(document, changes, options, userId) {
 
     if (vigorChanged) {
         if (vigorChanged.value <= 0) {
+            changes.system.attributes.vigor.value = 0;
+            changes.system.attributes.vigor.offset = 0;
             changes["system.attributes.conditions.fatigued"] = true;
         }
     }
 
     if (woundsChanged) {
-        const newWoundsValue = woundsChanged.value;
-        const woundsTotal = document.system.attributes.wounds.max;
+        const newWoundsValue = (woundsChanged.value || document.system.attributes.wounds.value);
+        const woundsTotal = woundsChanged.total || document.system.attributes.wounds.max;
+
         const woundPercentage = newWoundsValue / woundsTotal;
 
         if (woundPercentage <= 0) {
@@ -76,6 +138,20 @@ export function recoverWoundPoints(actor, options, updateData, itemUpdates) {
 
 export function extendActorTemplate(ActorTemplate) {
     return class WoundThresholdsActorTemplate extends ActorTemplate {
+        prepareSpecificDerivedData() {
+            const currentWoundPoints = this.system.attributes.wounds.value;
+            const currentVigorPoints = this.system.attributes.vigor.value;
+
+            super.prepareSpecificDerivedData();
+
+            const wounds = this.system.attributes.wounds;
+            wounds.max += this.system.abilities.con.drain;
+            wounds.value = Math.min(wounds.max, currentWoundPoints);
+
+            const vigor = this.system.attributes.vigor;
+            vigor.value = Math.min(vigor.max, currentVigorPoints);
+        }
+
         async modifyTokenAttribute(attribute, value, isDelta = false, isBar = true) {
             if (attribute !== "attributes.vigor") {
                 return super.modifyTokenAttribute(attribute, value, isDelta, isBar);

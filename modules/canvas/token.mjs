@@ -95,6 +95,11 @@ export function extendToken(Token) {
         }
 
         _drawBar(number, bar, data) {
+            if(data.attribute === "attributes.wounds") {
+                // Don't draw wounds bar
+                return;
+            }
+
             const black = 0x000000;
 
             // Get boost value (such as temporary hit points

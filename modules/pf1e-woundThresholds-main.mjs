@@ -1,5 +1,11 @@
 import {extendToken} from "./canvas/token.mjs";
-import {extendActorTemplate, recoverWoundPoints, toggleWoundThresholds} from "./documents/actor.mjs";
+import {
+    extendActorTemplate, highlightVigorThresholds,
+    highlightWoundThresholds,
+    recoverWoundPoints,
+    reduceWoundPoints,
+    toggleWoundThresholds
+} from "./documents/actor.mjs";
 import {registerConditions} from "./registry/conditions.mjs";
 
 Hooks.once("pf1PostInit", () => {
@@ -22,5 +28,11 @@ Hooks.once("pf1PostInit", () => {
     registerConditions();
 });
 
+Hooks.on("preUpdateActor", reduceWoundPoints)
+
 Hooks.on("preUpdateActor", toggleWoundThresholds)
-Hooks.on("pf1ActorRest", recoverWoundPoints);
+
+Hooks.on("pf1ActorRest", recoverWoundPoints)
+
+Hooks.on("renderActorSheetPF", highlightWoundThresholds)
+Hooks.on("renderActorSheetPF", highlightVigorThresholds)
