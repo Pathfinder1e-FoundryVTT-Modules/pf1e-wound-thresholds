@@ -22,7 +22,7 @@
 }
 
 #token-hud .attribute.bar1::before {
-    content: "Vitality";
+    content: "Vigor";
     bottom: 29px;
 }
 
@@ -34,16 +34,43 @@ html[lang="de"] #token-hud .attribute.bar1::before {
     content: "Vitalität";
 }
 
+/*.flexcol.wt-critical::after,
+.flexcol.wt-wounded::after,
+.flexcol.wt-grazed::after {
+    content: "_";
+    background-size: 100%;
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    width: 15px;
+    height: 15px;
+}
+.flexcol.wt-grazed::after {
+    background-image: url("../icons/conditions/wtGrazed.png");
+    filter: invert(80%) sepia(14%) saturate(2319%) hue-rotate(323deg) brightness(105%) contrast(101%);
+}
+.flexcol.wt-wounded::after {
+    background-image: url("../icons/conditions/wtWounded.png");
+    filter: invert(64%) sepia(30%) saturate(6996%) hue-rotate(322deg) brightness(100%) contrast(107%);
+}
+.flexcol.wt-critical::after {
+    background-image: url("../icons/conditions/wtCritical.png");
+    filter: invert(46%) sepia(93%) saturate(6433%) hue-rotate(346deg) brightness(108%) contrast(102%);
+}*/
+
 .flexcol.wt-grazed {
     background-color: #ffaf5f;
+    position: relative;
 }
 
 .flexcol.wt-wounded {
     background-color: #ff5f5f;
+    position: relative;
 }
 
 .flexcol.wt-critical {
     background-color: #ff2e2e;
+    position: relative;
 }
 
 .flexcol.wt-dead {

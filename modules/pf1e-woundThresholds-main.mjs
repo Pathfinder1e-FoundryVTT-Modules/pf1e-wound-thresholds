@@ -7,6 +7,7 @@ import {
     toggleWoundThresholds
 } from "./documents/actor.mjs";
 import {registerConditions} from "./registry/conditions.mjs";
+import {patchCritDamage} from "./action-use/action-use.mjs";
 
 Hooks.once("pf1PostInit", () => {
     pf1.canvas.TokenPF = extendToken(pf1.canvas.TokenPF);
@@ -36,3 +37,5 @@ Hooks.on("pf1ActorRest", recoverWoundPoints)
 
 Hooks.on("renderActorSheetPF", highlightWoundThresholds)
 Hooks.on("renderActorSheetPF", highlightVigorThresholds)
+
+Hooks.on("pf1PreDisplayActionUse", patchCritDamage)

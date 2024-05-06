@@ -68,7 +68,7 @@ export function registerConditions() {
                     modifier: "penalty",
                 },
                 {
-                    formula: -1,
+                    formula: -2,
                     subTarget: "cl",
                     modifier: "penalty",
                 },
@@ -102,7 +102,7 @@ export function registerConditions() {
                     modifier: "penalty",
                 },
                 {
-                    formula: -2,
+                    formula: -4,
                     subTarget: "cl",
                     modifier: "penalty",
                 },
