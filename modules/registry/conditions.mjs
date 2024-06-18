@@ -1,120 +1,130 @@
 export function registerConditions() {
-    pf1.config.conditions = Object.assign(pf1.config.conditions, {
-        wtGrazed: game.i18n.localize("PF1WT.WoundThresholdsGrazed"),
-        wtWounded: game.i18n.localize("PF1WT.WoundThresholdsWounded"),
-        wtCritical: game.i18n.localize("PF1WT.WoundThresholdsCritical"),
-    });
-
-    pf1.config.conditionMechanics = Object.assign(pf1.config.conditionMechanics, {
-        wtGrazed: {
+    pf1.registry.conditions.tracks.push("wounded")
+    pf1.registry.conditions.set("wtGrazed", new pf1.registry.Condition({
+        _id: "wtGrazed",
+        namespace: "pf1wt",
+        name: "PF1WT.WoundThresholdsGrazed",
+        texture: "modules/pf1e-wound-thresholds/icons/conditions/wtGrazed.png",
+        journal: null,
+        showInAction: true,
+        showInDefense: true,
+        mechanics: {
             changes: [
                 {
                     formula: -2,
-                    subTarget: "attack",
+                    target: "attack",
                     modifier: "penalty"
                 },
                 {
                     formula: -2,
-                    subTarget: "allSavingThrows",
+                    target: "allSavingThrows",
                     modifier: "penalty"
                 },
                 {
                     formula: -2,
-                    subTarget: "skills",
+                    target: "skills",
                     modifier: "penalty",
                 },
                 {
                     formula: -2,
-                    subTarget: "allChecks",
+                    target: "allChecks",
                     modifier: "penalty",
                 },
                 {
                     formula: -2,
-                    subTarget: "ac",
+                    target: "ac",
+                    modifier: "penalty",
+                }
+            ]
+        },
+        track: "wounded"
+    }))
+    pf1.registry.conditions.set("wtWounded", new pf1.registry.Condition({
+        _id: "wtWounded",
+        namespace: "pf1wt",
+        name: "PF1WT.WoundThresholdsWounded",
+        texture: "modules/pf1e-wound-thresholds/icons/conditions/wtWounded.png",
+        journal: null,
+        showInAction: true,
+        showInDefense: true,
+        mechanics: {
+            changes: [
+                {
+                    formula: -4,
+                    target: "attack",
+                    modifier: "penalty"
+                },
+                {
+                    formula: -4,
+                    target: "allSavingThrows",
+                    modifier: "penalty"
+                },
+                {
+                    formula: -4,
+                    target: "skills",
                     modifier: "penalty",
                 },
                 {
-                    formula: 0,
-                    subTarget: "cl",
+                    formula: -4,
+                    target: "allChecks",
+                    modifier: "penalty",
+                },
+                {
+                    formula: -4,
+                    target: "ac",
+                    modifier: "penalty",
+                },
+                {
+                    formula: -2,
+                    target: "cl",
                     modifier: "penalty",
                 },
             ]
         },
-        wtWounded: {
+        track: "wounded"
+    }))
+    pf1.registry.conditions.set("wtCritical", new pf1.registry.Condition({
+        _id: "wtCritical",
+        namespace: "pf1wt",
+        name: "PF1WT.WoundThresholdsCritical",
+        texture: "modules/pf1e-wound-thresholds/icons/conditions/wtCritical.png",
+        journal: null,
+        showInAction: true,
+        showInDefense: true,
+        mechanics: {
             changes: [
                 {
-                    formula: -4,
-                    subTarget: "attack",
+                    formula: -6,
+                    target: "attack",
                     modifier: "penalty"
                 },
                 {
-                    formula: -4,
-                    subTarget: "allSavingThrows",
+                    formula: -6,
+                    target: "allSavingThrows",
                     modifier: "penalty"
                 },
                 {
-                    formula: -4,
-                    subTarget: "skills",
+                    formula: -6,
+                    target: "skills",
+                    modifier: "penalty",
+                },
+                {
+                    formula: -6,
+                    target: "allChecks",
+                    modifier: "penalty",
+                },
+                {
+                    formula: -6,
+                    target: "ac",
                     modifier: "penalty",
                 },
                 {
                     formula: -4,
-                    subTarget: "allChecks",
-                    modifier: "penalty",
-                },
-                {
-                    formula: -4,
-                    subTarget: "ac",
-                    modifier: "penalty",
-                },
-                {
-                    formula: -2,
-                    subTarget: "cl",
+                    target: "cl",
                     modifier: "penalty",
                 },
             ]
         },
-        wtCritical: {
-            changes: [
-                {
-                    formula: -6,
-                    subTarget: "attack",
-                    modifier: "penalty"
-                },
-                {
-                    formula: -6,
-                    subTarget: "allSavingThrows",
-                    modifier: "penalty"
-                },
-                {
-                    formula: -6,
-                    subTarget: "skills",
-                    modifier: "penalty",
-                },
-                {
-                    formula: -6,
-                    subTarget: "allChecks",
-                    modifier: "penalty",
-                },
-                {
-                    formula: -6,
-                    subTarget: "ac",
-                    modifier: "penalty",
-                },
-                {
-                    formula: -4,
-                    subTarget: "cl",
-                    modifier: "penalty",
-                },
-            ]
-        }
-    });
-
-    pf1.config.conditionTracks.wounded = ["wtGrazed", "wtWounded", "wtCritical"];
-
-    pf1.config.conditionTextures = Object.assign(pf1.config.conditionTextures, {
-        wtGrazed: "modules/pf1e-wound-thresholds/icons/conditions/wtGrazed.png",
-        wtWounded: "modules/pf1e-wound-thresholds/icons/conditions/wtWounded.png",
-        wtCritical: "modules/pf1e-wound-thresholds/icons/conditions/wtCritical.png",
-    });
+        track: "wounded"
+    }))
 }

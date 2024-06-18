@@ -58,26 +58,23 @@ html[lang="de"] #token-hud .attribute.bar1::before {
     filter: invert(46%) sepia(93%) saturate(6433%) hue-rotate(346deg) brightness(108%) contrast(102%);
 }*/
 
-.flexcol.wt-grazed {
+.info-box.wt-grazed {
     background-color: #ffaf5f;
-    position: relative;
 }
 
-.flexcol.wt-wounded {
+.info-box.wt-wounded {
     background-color: #ff5f5f;
-    position: relative;
 }
 
-.flexcol.wt-critical {
+.info-box.wt-critical {
     background-color: #ff2e2e;
-    position: relative;
 }
 
-.flexcol.wt-dead {
+.info-box.wt-dead {
     background-color: #565656;
 }
 
-.flexcol.wt-critical > span,
-.flexcol.wt-dead > span {
+.info-box.wt-critical > span,
+.info-box.wt-dead > span {
     color: white !important
 }
