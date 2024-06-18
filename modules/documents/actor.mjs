@@ -47,16 +47,6 @@ export function highlightVigorThresholds(sheet, [html], data) {
     onChange()
 }
 
-export function reduceWoundPoints(document, changes, options, userId) {
-    if (
-        changes.system?.abilities?.con?.damage !== undefined
-        || changes.system?.abilities?.con?.drain !== undefined
-        || changes.system?.abilities?.con?.penalty !== undefined
-    ) {
-        delete changes.system?.attributes?.wounds;
-    }
-}
-
 export function toggleWoundThresholds(document, changes, options, userId) {
     const vigorChanged = changes?.system?.attributes?.vigor;
     const woundsChanged = changes?.system?.attributes?.wounds;
@@ -64,122 +54,57 @@ export function toggleWoundThresholds(document, changes, options, userId) {
     if (!vigorChanged && !woundsChanged) return;
 
     if (vigorChanged) {
-        if (vigorChanged.value <= 0) {
-            changes.system.attributes.vigor.value = 0;
-            changes.system.attributes.vigor.offset = 0;
-            changes["system.attributes.conditions.fatigued"] = true;
+        const newVigorValue = (vigorChanged.value || (document.system.attributes.vigor.max + vigorChanged.offset));
+        if (newVigorValue <= 0) {
+            document.setConditions({"fatigued": true});
         }
     }
 
     if (woundsChanged) {
-        const newWoundsValue = (woundsChanged.value || document.system.attributes.wounds.value);
+        const newWoundsValue = (woundsChanged.value || (document.system.attributes.wounds.max + woundsChanged.offset));
         const woundsTotal = woundsChanged.total || document.system.attributes.wounds.max;
 
         const woundPercentage = newWoundsValue / woundsTotal;
 
         if (woundPercentage <= 0) {
-            // Dead
-            changes["system.attributes.conditions.-=wtGrazed"] = null;
-            changes["system.attributes.conditions.-=wtWounded"] = null;
-            changes["system.attributes.conditions.-=wtCritical"] = null;
+            document.setConditions({
+                wtGrazed: false,
+                wtWounded: false,
+                wtCritical: false
+            })
         } else if (woundPercentage <= 0.5) {
-            if (!document.system.attributes.conditions.wtCritical) {
-                // Critical
-                changes["system.attributes.conditions.wtCritical"] = true;
-                changes["system.attributes.conditions.staggered"] = true;
-                changes["system.attributes.conditions.-=wtWounded"] = null;
-                changes["system.attributes.conditions.-=wtGrazed"] = null;
+            if (!document.system.conditions.wtCritical) {
+                document.setConditions({
+                    wtGrazed: false,
+                    wtWounded: false,
+                    wtCritical: true,
+                    staggered: true
+                })
             }
         } else if (woundPercentage <= 0.75) {
-            if (!document.system.attributes.conditions.wtWounded) {
-                // Wounded
-                changes["system.attributes.conditions.wtWounded"] = true;
-                changes["system.attributes.conditions.-=wtCritical"] = null;
-                changes["system.attributes.conditions.-=wtGrazed"] = null;
+            if (!document.system.conditions.wtWounded) {
+                document.setConditions({
+                    wtGrazed: false,
+                    wtWounded: true,
+                    wtCritical: false,
+                })
             }
         } else if (woundPercentage < 1) {
-            if (!document.system.attributes.conditions.wtGrazed) {
-                // Grazed
-                changes["system.attributes.conditions.wtGrazed"] = true;
-                changes["system.attributes.conditions.-=wtWounded"] = null;
-                changes["system.attributes.conditions.-=wtCritical"] = null;
+            if (!document.system.conditions.wtGrazed) {
+                document.setConditions({
+                    wtGrazed: true,
+                    wtWounded: false,
+                    wtCritical: false,
+                })
             }
         } else {
-            changes["system.attributes.conditions.-=wtGrazed"] = null;
-            changes["system.attributes.conditions.-=wtWounded"] = null;
-            changes["system.attributes.conditions.-=wtCritical"] = null;
+            document.setConditions({
+                wtGrazed: false,
+                wtWounded: false,
+                wtCritical: false
+            })
         }
     }
-}
 
-export function recoverWoundPoints(actor, options, updateData, itemUpdates) {
-    if (!options.restoreHealth) {
-        return;
-    }
-
-    let updates = {
-        "system.attributes.vigor.value": actor.system.attributes.vigor.max
-    };
-
-    let woundPointsRestore = 0;
-    if (options.hours >= 24) {
-        woundPointsRestore = Math.floor(actor.system.attributes.hd.total / 2)
-    } else if (options.hours >= 8) {
-        woundPointsRestore = 1;
-    }
-
-    if (options.longTermCare) {
-        woundPointsRestore *= 2;
-    }
-
-    updates["system.attributes.wounds.value"] = Math.min(actor.system.attributes.wounds.max, actor.system.attributes.wounds.value + woundPointsRestore);
-    actor.update(updates);
-}
-
-export function extendActorTemplate(ActorTemplate) {
-    return class WoundThresholdsActorTemplate extends ActorTemplate {
-        prepareSpecificDerivedData() {
-            const currentWoundPoints = this.system.attributes.wounds.value;
-            const currentVigorPoints = this.system.attributes.vigor.value;
-
-            super.prepareSpecificDerivedData();
-
-            const wounds = this.system.attributes.wounds;
-            wounds.max += this.system.abilities.con.drain;
-            wounds.value = Math.min(wounds.max, currentWoundPoints);
-
-            const vigor = this.system.attributes.vigor;
-            vigor.value = Math.min(vigor.max, currentVigorPoints);
-        }
-
-        async modifyTokenAttribute(attribute, value, isDelta = false, isBar = true) {
-            if (attribute !== "attributes.vigor") {
-                return super.modifyTokenAttribute(attribute, value, isDelta, isBar);
-            }
-
-            let doc = this;
-            const vigor = this.system.attributes.vigor,
-                wounds = this.system.attributes.wounds,
-                updates = {};
-
-            if (!isDelta) value = (vigor.temp + vigor.value - value) * -1;
-            let tempDamage = value;
-            if (vigor.temp > 0 && value < 0) {
-                tempDamage = Math.min(0, vigor.temp + value);
-                updates["system.attributes.vigor.temp"] = Math.max(0, vigor.temp + value);
-            }
-
-            if ((vigor.value + tempDamage) < 0) {
-                // Apply overdamage to wounds instead
-                let woundDamage = Math.abs(vigor.value + tempDamage);
-                updates["system.attributes.wounds.value"] = wounds.value - woundDamage;
-                tempDamage = -vigor.value;
-            }
-
-            updates["system.attributes.vigor.value"] = Math.min(vigor.value + tempDamage, vigor.max);
-
-            const allowed = Hooks.call("modifyTokenAttribute", {attribute, value, isDelta, isBar}, updates);
-            return allowed !== false ? doc.update(updates) : this;
-        }
-    }
+    console.log(document, changes)
 }
