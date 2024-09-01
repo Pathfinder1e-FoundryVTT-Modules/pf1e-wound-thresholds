@@ -1,6 +1,10 @@
-# Pathfinder 1e - Hex Grid Support
+# Pathfinder 1e - Wound Thresholds with Wounds & Vigor
 
-A collection of patches to the Pathfinder 1e system to add support for hex grids.
+A crude implementation of a wounds & vigor and wound threshold
+compatibility patch for Pathfinder 1e for FoundryVTT.
 
-Due to the nature of the code, this module overwrites some core PF1 functions, which may cause compatibility issues with
-normal square grids. It is recommended to only enable this module when using hex grids.
+The following conditions are automatically applied:
+- **Fatigued:** Character reaches 0 vigor.
+- **Grazed:** Character loses at least 1 wound point.
+- **Wounded:** Character loses at least 1/4 of their wounds.
+- **Critical:** Character loses at least 1/2 of their wounds.
