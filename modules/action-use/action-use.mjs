@@ -24,7 +24,6 @@ export function patchCritDamage(actionUse) {
         attack.damageRows = attack.damageRows.filter((row) => row.crit !== null || row.normal !== null)
 
         attack.critDamage.total = attack.critDamage.rolls.reduce((total, roll) => {
-            console.log(roll.total)
             return total + roll.total
         }, 0)
 
