@@ -1,7 +1,9 @@
 export function highlightWoundThresholds(sheet, [html], data) {
     const input = html.querySelector(`[name="system.attributes.wounds.value"]`);
     const onChange = () => {
-        const woundTotal = data.system.attributes.wounds.max;
+        const woundTotal = data.system.attributes?.wounds?.max;
+        if(woundTotal === undefined) return;
+
         const woundPercentage = data.system.attributes.wounds.value / woundTotal;
 
         let state = null;
@@ -23,7 +25,7 @@ export function highlightWoundThresholds(sheet, [html], data) {
             }
         }
     }
-    input.addEventListener("change", onChange);
+    input?.addEventListener("change", onChange);
     onChange()
 }
 
@@ -31,7 +33,7 @@ export function highlightVigorThresholds(sheet, [html], data) {
     const input = html.querySelector(`[name="system.attributes.vigor.value"]`);
     const onChange = () => {
         let state = null;
-        if (data.system.attributes.vigor.value === 0) {
+        if (data.system.attributes?.vigor?.value === 0) {
             state = "grazed";
         }
 
@@ -43,7 +45,7 @@ export function highlightVigorThresholds(sheet, [html], data) {
             }
         }
     }
-    input.addEventListener("change", onChange);
+    input?.addEventListener("change", onChange);
     onChange()
 }
 
@@ -105,6 +107,4 @@ export function toggleWoundThresholds(document, changes, options, userId) {
             })
         }
     }
-
-    console.log(document, changes)
 }

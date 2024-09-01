@@ -17,6 +17,12 @@
           "verified": "9.7"
         }
       }
+    ],
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module"
+      }
     ]
   },
   "description": "Add Wound Threshold Support for Wounds & Vigor support for Pathfinder 1e.",
