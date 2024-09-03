@@ -6,7 +6,7 @@
     border: 1px solid #ff5f5f;
 }
 
-#token-hud .attribute::before {
+#token-hud .attribute:has(*)::before {
     position: absolute;
     color: white;
     opacity: 0.5;
@@ -16,21 +16,21 @@
     pointer-events: none;
 }
 
-#token-hud .attribute.bar2::before {
+#token-hud .attribute.bar2:has(*)::before {
     content: "Wounds";
     top: 1px;
 }
 
-#token-hud .attribute.bar1::before {
+#token-hud .attribute.bar1:has(*)::before {
     content: "Vigor";
     bottom: 29px;
 }
 
-html[lang="de"] #token-hud .attribute.bar2::before {
+html[lang="de"] #token-hud .attribute.bar2:has(*)::before {
     content: "Wunden";
 }
 
-html[lang="de"] #token-hud .attribute.bar1::before {
+html[lang="de"] #token-hud .attribute.bar1:has(*)::before {
     content: "Vitalität";
 }
 
