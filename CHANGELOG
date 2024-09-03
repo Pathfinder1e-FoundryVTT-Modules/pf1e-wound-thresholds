@@ -4,6 +4,7 @@
 - Prevent attribute input labels from showing when attribute is not set
 - Remove change listeners from sheet attribute inputs (foundry handles this already)
 - Update condition registration to different hook and simplify code
+- Simplify condition update
 
 ## v1.0.0
 - Initial release

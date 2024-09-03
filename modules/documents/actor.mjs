@@ -48,10 +48,18 @@ export function toggleWoundThresholds(document, changes, options, userId) {
 
     if (!vigorChanged && !woundsChanged) return;
 
+    let conditions = {
+        wtGrazed: false,
+        wtWounded: false,
+        wtCritical: false,
+        staggered: false,
+        fatigued: null
+    }
+
     if (vigorChanged) {
         const newVigorValue = (vigorChanged.value || (document.system.attributes.vigor.max + vigorChanged.offset));
         if (newVigorValue <= 0) {
-            document.setConditions({"fatigued": true});
+            conditions.fatigued = true;
         }
     }
 
@@ -62,42 +70,33 @@ export function toggleWoundThresholds(document, changes, options, userId) {
         const woundPercentage = newWoundsValue / woundsTotal;
 
         if (woundPercentage <= 0) {
-            document.setConditions({
-                wtGrazed: false,
-                wtWounded: false,
-                wtCritical: false
-            })
+            // Do nothing
         } else if (woundPercentage <= 0.5) {
-            if (!document.system.conditions.wtCritical) {
-                document.setConditions({
-                    wtGrazed: false,
-                    wtWounded: false,
-                    wtCritical: true,
-                    staggered: true
-                })
-            }
+            conditions.staggered = true;
+            conditions.wtCritical = true;
         } else if (woundPercentage <= 0.75) {
-            if (!document.system.conditions.wtWounded) {
-                document.setConditions({
-                    wtGrazed: false,
-                    wtWounded: true,
-                    wtCritical: false,
-                })
-            }
+            conditions.wtWounded = true;
         } else if (woundPercentage < 1) {
-            if (!document.system.conditions.wtGrazed) {
-                document.setConditions({
-                    wtGrazed: true,
-                    wtWounded: false,
-                    wtCritical: false,
-                })
-            }
-        } else {
-            document.setConditions({
-                wtGrazed: false,
-                wtWounded: false,
-                wtCritical: false
-            })
+            conditions.wtGrazed = true;
         }
+    }
+
+    let conditionsChanged = false;
+    for(const [key, value] of Object.entries(conditions)) {
+        if(value === null) {
+            delete conditions[key];
+            continue;
+        }
+
+        if(document.system.conditions[key] !== value) {
+            conditionsChanged = true;
+        }
+        else {
+            delete conditions[key];
+        }
+    }
+
+    if(conditionsChanged) {
+        document.setConditions(conditions);
     }
 }
