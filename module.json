@@ -1,7 +1,7 @@
 {
   "id": "pf1e-wound-thresholds",
   "title": "Pathfinder 1e - Wound Thresholds",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": {
     "minimum": "11",
     "verified": "11"
