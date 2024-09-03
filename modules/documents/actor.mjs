@@ -1,12 +1,12 @@
 export function highlightWoundThresholds(sheet, [html], data) {
-    const input = html.querySelector(`[name="system.attributes.wounds.value"]`);
+    const input = html.querySelector(`.wounds-current-input`);
 
     const woundTotal = data.system.attributes?.wounds?.max;
-    if(woundTotal === undefined) return;
+    if (woundTotal === undefined) return;
 
     const woundPercentage = data.system.attributes.wounds.value / woundTotal;
 
-    let state = null;
+    let state = "healthy";
     if (woundPercentage <= 0) {
         state = "dead";
     } else if (woundPercentage <= 0.5) {
@@ -17,29 +17,13 @@ export function highlightWoundThresholds(sheet, [html], data) {
         state = "grazed";
     }
 
-    if (input) {
-        const parentNode = input.parentNode;
-        parentNode.classList.remove("wt-dead", "wt-critical", "wt-wounded", "wt-grazed");
-        if (state) {
-            parentNode.classList.add(`wt-${state}`);
-        }
-    }
+    input?.parentNode?.classList?.add(`wt-${state}`);
 }
 
 export function highlightVigorThresholds(sheet, [html], data) {
-    const input = html.querySelector(`[name="system.attributes.vigor.value"]`);
-    let state = null;
-    if (data.system.attributes?.vigor?.value === 0) {
-        state = "grazed";
-    }
-
-    if (input) {
-        const parentNode = input.parentNode;
-        parentNode.classList.remove("wt-grazed");
-        if (state) {
-            parentNode.classList.add(`wt-${state}`);
-        }
-    }
+    const input = html.querySelector(`.vigor-current-input`);
+    const state = data.system.attributes?.vigor?.value !== 0 ? "healthy" : "grazed";
+    input?.parentNode?.classList?.add(`wt-${state}`);
 }
 
 export function toggleWoundThresholds(document, changes, options, userId) {
@@ -82,21 +66,20 @@ export function toggleWoundThresholds(document, changes, options, userId) {
     }
 
     let conditionsChanged = false;
-    for(const [key, value] of Object.entries(conditions)) {
-        if(value === null) {
+    for (const [key, value] of Object.entries(conditions)) {
+        if (value === null) {
             delete conditions[key];
             continue;
         }
 
-        if(document.system.conditions[key] !== value) {
+        if (document.system.conditions[key] !== value) {
             conditionsChanged = true;
-        }
-        else {
+        } else {
             delete conditions[key];
         }
     }
 
-    if(conditionsChanged) {
+    if (conditionsChanged) {
         document.setConditions(conditions);
     }
 }
