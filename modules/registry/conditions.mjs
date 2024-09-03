@@ -1,13 +1,11 @@
-export function registerConditions() {
-    pf1.registry.conditions.tracks.push("wounded")
-    pf1.registry.conditions.set("wtGrazed", new pf1.registry.Condition({
-        _id: "wtGrazed",
-        namespace: "pf1wt",
+import {MODULE_ID} from "../_moduleId.mjs";
+
+export function registerConditions(registry) {
+    registry.tracks.push("wounded")
+
+    registry.register(MODULE_ID, "wtGrazed", {
         name: "PF1WT.WoundThresholdsGrazed",
         texture: "modules/pf1e-wound-thresholds/icons/conditions/open-wound.svg",
-        journal: null,
-        showInAction: true,
-        showInDefense: true,
         mechanics: {
             changes: [
                 {
@@ -38,15 +36,11 @@ export function registerConditions() {
             ]
         },
         track: "wounded"
-    }))
-    pf1.registry.conditions.set("wtWounded", new pf1.registry.Condition({
-        _id: "wtWounded",
-        namespace: "pf1wt",
+    })
+
+    registry.register(MODULE_ID, "wtWounded", {
         name: "PF1WT.WoundThresholdsWounded",
         texture: "modules/pf1e-wound-thresholds/icons/conditions/ragged-wound.svg",
-        journal: null,
-        showInAction: true,
-        showInDefense: true,
         mechanics: {
             changes: [
                 {
@@ -82,15 +76,11 @@ export function registerConditions() {
             ]
         },
         track: "wounded"
-    }))
-    pf1.registry.conditions.set("wtCritical", new pf1.registry.Condition({
-        _id: "wtCritical",
-        namespace: "pf1wt",
+    })
+
+    registry.register(MODULE_ID, "wtCritical", {
         name: "PF1WT.WoundThresholdsCritical",
         texture: "modules/pf1e-wound-thresholds/icons/conditions/bloody-stash.svg",
-        journal: null,
-        showInAction: true,
-        showInDefense: true,
         mechanics: {
             changes: [
                 {
@@ -126,5 +116,5 @@ export function registerConditions() {
             ]
         },
         track: "wounded"
-    }))
+    })
 }

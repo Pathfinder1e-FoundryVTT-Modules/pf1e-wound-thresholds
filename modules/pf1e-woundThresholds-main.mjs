@@ -18,8 +18,11 @@ Hooks.once("pf1PostInit", () => {
     pf1.canvas.TokenPF = extendToken(pf1.canvas.TokenPF);
     CONFIG.Token.objectClass = extendToken(CONFIG.Token.objectClass);
 
-    registerConditions();
 });
+
+Hooks.on("pf1RegisterConditions", (registry, model) => {
+    registerConditions(registry);
+})
 
 Hooks.on("preUpdateActor", toggleWoundThresholds)
 Hooks.on("renderActorSheetPF", highlightWoundThresholds)
