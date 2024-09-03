@@ -9,7 +9,7 @@ import {registerConditions} from "./registry/conditions.mjs";
 
 export const MODULE_NAME = "pf1e-woundThresholds";
 
-// TODO: Lib-Wrap Token extend
+// TODO: Lib-Wrap Token extend?
 // Hooks.once("init", () => {
 //
 // });

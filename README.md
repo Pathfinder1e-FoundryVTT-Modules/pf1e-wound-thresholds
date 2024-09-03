@@ -8,3 +8,8 @@ The following conditions are automatically applied:
 - **Grazed:** Character loses at least 1 wound point.
 - **Wounded:** Character loses at least 1/4 of their wounds.
 - **Critical:** Character loses at least 1/2 of their wounds.
+
+# Credits
+
+- The following images are included in this project:
+    - [Open wound](https://game-icons.net/1x1/lorc/open-wound.html), [Ragged wound](https://game-icons.net/1x1/lorc/ragged-wound.html), [Bloody stash](https://game-icons.net/1x1/lorc/bloody-stash.html) by [Lorc](https://lorcblog.blogspot.com/) under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
