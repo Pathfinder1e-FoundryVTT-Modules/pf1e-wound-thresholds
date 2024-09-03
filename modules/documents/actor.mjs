@@ -1,52 +1,45 @@
 export function highlightWoundThresholds(sheet, [html], data) {
     const input = html.querySelector(`[name="system.attributes.wounds.value"]`);
-    const onChange = () => {
-        const woundTotal = data.system.attributes?.wounds?.max;
-        if(woundTotal === undefined) return;
 
-        const woundPercentage = data.system.attributes.wounds.value / woundTotal;
+    const woundTotal = data.system.attributes?.wounds?.max;
+    if(woundTotal === undefined) return;
 
-        let state = null;
-        if (woundPercentage <= 0) {
-            state = "dead";
-        } else if (woundPercentage <= 0.5) {
-            state = "critical";
-        } else if (woundPercentage <= 0.75) {
-            state = "wounded";
-        } else if (woundPercentage < 1) {
-            state = "grazed";
-        }
+    const woundPercentage = data.system.attributes.wounds.value / woundTotal;
 
-        if (input) {
-            const parentNode = input.parentNode;
-            parentNode.classList.remove("wt-dead", "wt-critical", "wt-wounded", "wt-grazed");
-            if (state) {
-                parentNode.classList.add(`wt-${state}`);
-            }
+    let state = null;
+    if (woundPercentage <= 0) {
+        state = "dead";
+    } else if (woundPercentage <= 0.5) {
+        state = "critical";
+    } else if (woundPercentage <= 0.75) {
+        state = "wounded";
+    } else if (woundPercentage < 1) {
+        state = "grazed";
+    }
+
+    if (input) {
+        const parentNode = input.parentNode;
+        parentNode.classList.remove("wt-dead", "wt-critical", "wt-wounded", "wt-grazed");
+        if (state) {
+            parentNode.classList.add(`wt-${state}`);
         }
     }
-    input?.addEventListener("change", onChange);
-    onChange()
 }
 
 export function highlightVigorThresholds(sheet, [html], data) {
     const input = html.querySelector(`[name="system.attributes.vigor.value"]`);
-    const onChange = () => {
-        let state = null;
-        if (data.system.attributes?.vigor?.value === 0) {
-            state = "grazed";
-        }
+    let state = null;
+    if (data.system.attributes?.vigor?.value === 0) {
+        state = "grazed";
+    }
 
-        if (input) {
-            const parentNode = input.parentNode;
-            parentNode.classList.remove("wt-grazed");
-            if (state) {
-                parentNode.classList.add(`wt-${state}`);
-            }
+    if (input) {
+        const parentNode = input.parentNode;
+        parentNode.classList.remove("wt-grazed");
+        if (state) {
+            parentNode.classList.add(`wt-${state}`);
         }
     }
-    input?.addEventListener("change", onChange);
-    onChange()
 }
 
 export function toggleWoundThresholds(document, changes, options, userId) {
