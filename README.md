@@ -8,6 +8,15 @@ The following conditions are automatically applied:
 - **Grazed:** Character loses at least 1 wound point.
 - **Wounded:** Character loses at least 1/4 of their wounds.
 - **Critical:** Character loses at least 1/2 of their wounds.
+- **Staggered:** Character loses at least 1/2 of their wounds.
+
+# Token Settings
+
+This module runs under the assumption that tokens are set up as follows:
+- **Bar 1:** Vigor
+- **Bar 2:** Wounds
+
+Bars will be condensed into one bar that shows both attributes at once.
 
 # Credits
 
