@@ -1,3 +1,8 @@
+## v1.1.0
+- Pathfinder1e v11/FoundryVTT v12 compatibility
+- Improve token box rendering
+- Replace condition icons to better signal increasing status
+
 ## v1.0.1
 - Change icons from PNG to SVG to allow transparency
 - Fix icons not showing on token menu

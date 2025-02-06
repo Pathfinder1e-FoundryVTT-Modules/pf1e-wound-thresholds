@@ -45,7 +45,7 @@ export function extendToken(Token) {
         }
 
         _getColor(currentValue, maxValue, barNumber = 0, fade = 0) {
-            const currentPercentage = Math.clamped(currentValue, 0, maxValue) / maxValue;
+            const currentPercentage = Math.clamp(currentValue, 0, maxValue) / maxValue;
 
             switch (barNumber) {
                 case 0:
@@ -79,7 +79,7 @@ export function extendToken(Token) {
                 return;
             }
 
-            const barEnd = Math.clamped(segment.value + offset, 0, data.max) / data.max;
+            const barEnd = Math.clamp(segment.value + offset, 0, data.max) / data.max;
             bar
                 .beginFill(segment.color, 1.0)
                 .lineStyle(style.borderWidth, 0x000000, 1.0)
@@ -114,7 +114,7 @@ export function extendToken(Token) {
             let barStyle = {
                 barHeight: barHeight,
                 barWidth: this.w,
-                borderWidth: Math.clamped(barHeight / 8, 1, 2)
+                borderWidth: Math.clamp(barHeight / 8, 1, 2)
             }
 
             // Draw the bar

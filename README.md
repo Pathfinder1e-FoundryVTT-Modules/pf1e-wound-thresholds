@@ -21,4 +21,4 @@ Bars will be condensed into one bar that shows both attributes at once.
 # Credits
 
 - The following images are included in this project:
-    - [Open wound](https://game-icons.net/1x1/lorc/open-wound.html), [Ragged wound](https://game-icons.net/1x1/lorc/ragged-wound.html), [Bloody stash](https://game-icons.net/1x1/lorc/bloody-stash.html) by [Lorc](https://lorcblog.blogspot.com/) under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+    - [Bloody stash](https://game-icons.net/1x1/lorc/bloody-stash.html) by [Lorc](https://lorcblog.blogspot.com/) under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), edited as `wt-critical`, `wt-grazed` and `wt-wounded`.

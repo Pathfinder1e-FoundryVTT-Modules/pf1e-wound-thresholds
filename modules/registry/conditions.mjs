@@ -10,7 +10,7 @@ export function registerConditions(registry) {
 
     registry.register(MODULE_ID, "wtGrazed", {
         name: "PF1WT.WoundThresholdsGrazed",
-        texture: "modules/pf1e-wound-thresholds/icons/conditions/open-wound.svg",
+        texture: "modules/pf1e-wound-thresholds/icons/conditions/wt-grazed.svg",
         mechanics: {
             changes: ["attack", "allSavingThrows", "skills", "allChecks", "ac", "cl"].map(target => ({
                 formula: -1 * modifier * (offsets[target] || 1),
@@ -23,7 +23,7 @@ export function registerConditions(registry) {
 
     registry.register(MODULE_ID, "wtWounded", {
         name: "PF1WT.WoundThresholdsWounded",
-        texture: "modules/pf1e-wound-thresholds/icons/conditions/ragged-wound.svg",
+        texture: "modules/pf1e-wound-thresholds/icons/conditions/wt-wounded.svg",
         mechanics: {
             changes: ["attack", "allSavingThrows", "skills", "allChecks", "ac", "cl"].map(target => ({
                 formula: -2 * modifier * (offsets[target] || 1),
@@ -36,7 +36,7 @@ export function registerConditions(registry) {
 
     registry.register(MODULE_ID, "wtCritical", {
         name: "PF1WT.WoundThresholdsCritical",
-        texture: "modules/pf1e-wound-thresholds/icons/conditions/bloody-stash.svg",
+        texture: "modules/pf1e-wound-thresholds/icons/conditions/wt-critical.svg",
         mechanics: {
             changes: ["attack", "allSavingThrows", "skills", "allChecks", "ac", "cl"].map(target => ({
                 formula: -3 * modifier * (offsets[target] || 1),

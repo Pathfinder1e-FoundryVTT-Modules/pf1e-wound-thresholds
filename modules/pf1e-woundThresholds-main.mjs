@@ -5,6 +5,7 @@ import {
     toggleWoundThresholds
 } from "./documents/actor.mjs";
 import {registerConditions} from "./registry/conditions.mjs";
+import {extendTokenHud} from "./canvas/token-hud.mjs";
 // import {patchCritDamage} from "./action-use/action-use.mjs";
 
 export const MODULE_NAME = "pf1e-woundThresholds";
@@ -16,8 +17,9 @@ export const MODULE_NAME = "pf1e-woundThresholds";
 
 Hooks.once("pf1PostInit", () => {
     pf1.canvas.TokenPF = extendToken(pf1.canvas.TokenPF);
-    CONFIG.Token.objectClass = extendToken(CONFIG.Token.objectClass);
-
+    CONFIG.Token.objectClass = pf1.canvas.TokenPF;
+    pf1.canvas.TokenHUDPF = extendTokenHud(pf1.canvas.TokenHUDPF);
+    CONFIG.Token.hudClass = pf1.canvas.TokenHUDPF;
 });
 
 Hooks.on("pf1RegisterConditions", (registry, model) => {

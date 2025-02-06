@@ -2,79 +2,50 @@
     color: #400000;
 }
 
-#token-hud .attribute.bar2 input {
-    border: 1px solid #ff5f5f;
+#token-hud {
+    .attribute {
+        &:is(.bar1, .bar2) {
+            position: relative;
+
+            .bar-label {
+                position: absolute;
+                top: 1px;
+                color: white;
+                opacity: 0.5;
+                font-size: 8px;
+                width: 100%;
+                text-align: center;
+                pointer-events: none;
+            }
+
+            &.vigor input {
+                border: 1px solid #40C4FF;
+            }
+
+            &.hp input {
+                border: 1px solid #8BC34A;
+            }
+            &.wounds input {
+                border: 1px solid #ff5f5f;
+            }
+        }
+    }
 }
 
-#token-hud .attribute:has(*)::before {
-    position: absolute;
-    color: white;
-    opacity: 0.5;
-    font-size: 8px;
-    width: 100%;
-    text-align: center;
-    pointer-events: none;
-}
+.info-box {
+    &.wt-grazed {
+        background: radial-gradient(rgba(255, 171, 62, 25%) 40%, rgba(255, 171, 62, 50%) 90%)
+    }
 
-#token-hud .attribute.bar2:has(*)::before {
-    content: "Wounds";
-    top: 1px;
-}
+    &.wt-wounded {
+        background: radial-gradient(rgba(255, 135, 85, 0.25) 40%, rgba(255, 135, 85, 0.5) 90%);
+    }
 
-#token-hud .attribute.bar1:has(*)::before {
-    content: "Vigor";
-    bottom: 29px;
-}
+    &.wt-critical {
+        background: radial-gradient(rgba(255, 15, 15, 0.25) 40%, rgba(255, 15, 15, 0.5) 90%);
+    }
 
-html[lang="de"] #token-hud .attribute.bar2:has(*)::before {
-    content: "Wunden";
-}
-
-html[lang="de"] #token-hud .attribute.bar1:has(*)::before {
-    content: "Vitalität";
-}
-
-/*.flexcol.wt-critical::after,
-.flexcol.wt-wounded::after,
-.flexcol.wt-grazed::after {
-    content: "_";
-    background-size: 100%;
-    position: absolute;
-    left: 4px;
-    bottom: 4px;
-    width: 15px;
-    height: 15px;
-}
-.flexcol.wt-grazed::after {
-    background-image: url("../icons/conditions/wtGrazed.png");
-    filter: invert(80%) sepia(14%) saturate(2319%) hue-rotate(323deg) brightness(105%) contrast(101%);
-}
-.flexcol.wt-wounded::after {
-    background-image: url("../icons/conditions/wtWounded.png");
-    filter: invert(64%) sepia(30%) saturate(6996%) hue-rotate(322deg) brightness(100%) contrast(107%);
-}
-.flexcol.wt-critical::after {
-    background-image: url("../icons/conditions/wtCritical.png");
-    filter: invert(46%) sepia(93%) saturate(6433%) hue-rotate(346deg) brightness(108%) contrast(102%);
-}*/
-
-.info-box.wt-grazed {
-    background-color: #ffaf5f;
-}
-
-.info-box.wt-wounded {
-    background-color: #ff5f5f;
-}
-
-.info-box.wt-critical {
-    background-color: #ff2e2e;
-}
-
-.info-box.wt-dead {
-    background-color: #565656;
-}
-
-.info-box.wt-critical > span,
-.info-box.wt-dead > span {
-    color: white !important
+    &.wt-dead {
+        background: radial-gradient(rgba(46, 46, 46, 0.25) 40%, rgba(46, 46, 46, 0.5) 90%);
+    }
 }
